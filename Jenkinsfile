@@ -6,7 +6,7 @@ pipeline{
     }
     environment{
         COURSE = "jenkins"
-        appVersion = ""
+        appVersion = "1.1.0"
         ACC_ID = "802346121661"
         PROJECT = "roboshop"
         COMPONENT = "catalogue"
@@ -21,8 +21,8 @@ pipeline{
             steps {
                 script{
                     def packageJSON = readJSON file: 'package.json'
-                    env.appVersion  = packageJSON.version
-                    echo " appVersion : ${env.appVersion}"
+                    appVersion  = packageJSON.version
+                    echo " appVersion : ${appVersion}"
                 }
 
             }
@@ -41,7 +41,6 @@ pipeline{
                 script {
                     withAWS(region:'us-east-1',credentials:'aws-cred') {
                         sh """
-                            set -e
                             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
                             docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
                             docker images
