@@ -36,6 +36,7 @@ pipeline{
                 sh """
                     docker build -t catalogue:${appVersion} .
                     docker images
+                """
             }
 
         }
