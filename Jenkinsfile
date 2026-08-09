@@ -46,19 +46,22 @@ pipeline{
 
             }
         }
-        stage('sonar-scan'){
-            steps{
-                environment {
-                    def scannerHome = tool 'sonar-8.0'
-                }
+        stage('sonar scan'){
+            environment {
+                def scannerHome = tool 'sonar-8.0'
+            }
+            steps {
                 script{
-                     withSonarQubeEnv('sonar-server') {
+                    withSonarQubeEnv('sonar-server') {
                         sh  "${scannerHome}/bin/sonar-scanner"
+            
                     }
-
                 }
             }
         }
+
+            
+        
         stage('Build Image') {
             steps{
                 script {
